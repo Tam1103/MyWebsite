@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyBlock.Models
+namespace MyWebiste.Models
 {
     [Table("RoleAccount")]
     public class RoleAccount

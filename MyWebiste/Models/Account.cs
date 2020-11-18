@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyBlock.Models
+namespace MyWebiste.Models
 {
     [Table("Account")]
     public class Account
