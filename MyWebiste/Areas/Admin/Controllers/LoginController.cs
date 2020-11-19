@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using MyWebiste.Models;
 using MyWebiste.Security;
@@ -143,6 +144,36 @@ namespace MyWebiste.Areas.Admin.Controllers
             {
                 return RedirectToAction("resetpassword", "login", new { area = "admin", id = currentAccount.Id });
             }
+        }
+
+         [HttpGet]
+        [Route("profile")]
+        public IActionResult Profile()
+        {
+            var user = User.FindFirst(ClaimTypes.Name);
+            var username = user.Value;
+            var account = db.Accounts.SingleOrDefault(a => a.Username.Equals(username));
+            return View("Profile", account);
+        }
+
+        [HttpPost]
+        [Route("profile")]
+        public IActionResult Profile(Account account)
+        {
+            var currentAccount = db.Accounts.SingleOrDefault(a => a.Id.Equals(account.Id));
+            if (!string.IsNullOrEmpty(account.Password))
+            {
+                currentAccount.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
+            }
+            currentAccount.Username = account.Username;
+            currentAccount.Email = account.Email;
+            currentAccount.FullName = account.FullName;
+            currentAccount.Status = account.Status;
+
+            ViewBag.msg = "Update successful";
+
+            db.SaveChanges();
+            return View("Profile");
         }
 
         [Route("accessdenied")]

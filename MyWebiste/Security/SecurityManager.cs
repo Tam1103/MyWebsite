@@ -31,8 +31,8 @@ namespace MyWebiste.Security
         private IEnumerable<Claim> GetUserClaims(Account account)
         {
             List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, account.FullName));
-
+            claims.Add(new Claim(ClaimTypes.Name, account.Username));
+            claims.Add(new Claim("FullName", account.FullName));
             account.RoleAccounts.ToList().ForEach(ra =>
             {
                 claims.Add(new Claim(ClaimTypes.Role, ra.Role.Name));
