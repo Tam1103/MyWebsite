@@ -52,5 +52,24 @@ namespace MyWebsite.Areas.Admin.Controllers
             db.SaveChanges();
             return RedirectToAction("index", "category", new { area = "admin" });
         }
+
+        [HttpGet]
+        [Route("edit/{id}")]
+        public IActionResult Edit(int id)
+        {
+            var categories = db.Categories.Find(id);
+            return View("Edit", categories);
+        }
+
+        [HttpPost]
+        [Route("edit/{id}")]
+        public IActionResult Edit(int id, Category category)
+        {
+            var currentCategory = db.Categories.Find(id);
+            currentCategory.Name = category.Name;
+            currentCategory.Status = category.Status;
+            db.SaveChanges();
+            return RedirectToAction("index", "category", new { area = "admin" });
+        }
     }
 }
