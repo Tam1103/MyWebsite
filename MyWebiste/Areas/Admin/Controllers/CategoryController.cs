@@ -71,5 +71,27 @@ namespace MyWebsite.Areas.Admin.Controllers
             db.SaveChanges();
             return RedirectToAction("index", "category", new { area = "admin" });
         }
+
+        [HttpGet]
+        [Route("addsubcategory/{id}")]
+        public IActionResult AddSubcategory(int id)
+        {
+            var categories = new Category()
+            {
+                ParentId = id
+            };
+
+            return View("AddSubcategory", categories);
+        }
+
+
+        [HttpPost]
+        [Route("addsubcategory/{subcategoryid}")]
+        public IActionResult AddSubcategory(Category category)
+        {
+            db.Categories.Add(category);
+            db.SaveChanges();
+            return RedirectToAction("index", "category", new { area = "admin" });
+        }
     }
 }
