@@ -59,11 +59,44 @@ namespace MyWebiste.Areas.Admin.Controllers
             return null;
         }
 
-        [Route("signout")]
-        public IActionResult SignOut()
+        [Route("logout")]
+        public IActionResult LogOut()
         {
             securityManager.SignOut(this.HttpContext);
             return RedirectToAction("index", "login", new { area = "admin" });
+        }
+
+        [HttpGet]
+        [Route("register")]
+        public IActionResult Register()
+        {
+            return View("Register");
+        }
+
+
+        [HttpPost]
+        [Route("register")]
+        public IActionResult Regester(Account account)
+        {
+            var eaccount = db.Accounts.All(a => a.Email != account.Email && a.Username != account.Username);
+            if (!eaccount)
+            {
+                ViewBag.notice = "your email or username registered";
+                return View("Register");
+            }
+            account.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
+            account.Status = true;
+            db.Accounts.Add(account);
+            db.SaveChanges();
+
+            var roleAccount = new RoleAccount();
+            roleAccount.RoleId = 2;
+            roleAccount.AccountId = account.Id;
+            roleAccount.Status = true;
+            db.RoleAccounts.Add(roleAccount);
+            ViewBag.notice = "Register Successful";
+            db.SaveChanges();
+            return View("Register");
         }
 
         [Route("accessdenied")]
@@ -71,5 +104,6 @@ namespace MyWebiste.Areas.Admin.Controllers
         {
             return View("AccessDenied");
         }
+
     }
 }
