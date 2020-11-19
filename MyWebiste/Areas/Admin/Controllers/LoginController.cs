@@ -99,6 +99,52 @@ namespace MyWebiste.Areas.Admin.Controllers
             return View("Register");
         }
 
+        [HttpGet]
+        [Route("resetpassword/{id}")]
+        public IActionResult ResetPassword(int id)
+        {
+            var account = db.Accounts.Find(id);
+            return View("ResetPassword", account);
+        }
+
+        [HttpPost]
+        [Route("resetpassword/{id}")]
+        public IActionResult ResetPassword(int id, Account account)
+        {
+            var currentAccount = db.Accounts.Find(id);
+            if (!string.IsNullOrEmpty(account.Password))
+            {
+                currentAccount.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
+            }
+            ViewBag.msg = "Reset password successful";
+
+            db.SaveChanges();
+            return View("ResetPassword");
+        }
+
+        [HttpGet]
+        [Route("forgotpassword")]
+        public IActionResult ForgotPassword()
+        {
+            return View("ForgotPassword");
+        }
+
+        [HttpPost]
+        [Route("forgotpassword")]
+        public IActionResult ForgotPassword(Account account)
+        {
+            var currentAccount = db.Accounts.FirstOrDefault(a => a.Email == account.Email);
+            if (currentAccount == null)
+            {
+                ViewBag.error = "Invalid Account";
+                return View("forgotpassword");
+            }
+            else
+            {
+                return RedirectToAction("resetpassword", "login", new { area = "admin", id = currentAccount.Id });
+            }
+        }
+
         [Route("accessdenied")]
         public IActionResult AccessDenied()
         {
