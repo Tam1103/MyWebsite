@@ -27,15 +27,17 @@
                 <div class="account_desc">
                     <ul>
                         <li><a asp-controller="customer" asp-action="register">Register</a></li>
-                        <li><a asp-controller="customer" asp-action="login">Login</a></li>
                         <li><a href="#">Delivery</a></li>
                         <li><a href="#">Checkout</a></li>
-                        @if (user != null){
+                        @if (user != null)
+                        {
                             <li><a asp-controller="customer" asp-action="profile">@user.Value</a></li>
                             <li><a asp-controller="customer" asp-action="signout">Logout</a></li>
                         }
-                else{
-                              <li><a href="#">My Account</a></li>
+                        else
+                        {
+                            <li><a asp-controller="customer" asp-action="login">Login</a></li>
+                            <li><a href="#">My Account</a></li>
                         }
                     </ul>
                 </div>
@@ -101,18 +103,12 @@
                         <input type="text" value="SEARCH" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'SEARCH';}"><input type="submit" value="">
                     </form>
                 </div>
-                @*@await Component.InvokeAsync("Search")*@
+                @await Component.InvokeAsync("Search")
                 <div class="clear"></div>
             </div>
             <div class="header_slide">
-<<<<<<< HEAD
-                @*@await Component.InvokeAsync("Category")
-=======
+               @await Component.InvokeAsync("Category")
 
-                @await Component.InvokeAsync("Category")
->>>>>>> feature/show_category
-
-                @await Component.InvokeAsync("SlideShow")*@
                 <div class="clear"></div>
             </div>
         </div>
