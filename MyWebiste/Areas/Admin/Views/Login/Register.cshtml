@@ -36,11 +36,21 @@
                 </div>
 
 
-                <form asp-area="admin" asp-controller="login" asp-action="register" method="post" class="login100-form validate-form">
+                <form asp-area="admin" asp-controller="login" asp-action="register" method="post" class="login100-form validate-form" enctype="multipart/form-data">
                     <span class="login100-form-title">
                         Member Register
                         <br />  <span style="color:red;text-align:center;font-weight:bold;">@ViewBag.notice</span>
                     </span>
+
+                    <div class="form-group">
+                        <label for="exampleInputFile">File input</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" id="exampleInputFile" asp-for="Photo" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                         <input class="input100" type="text" required="required" placeholder="Fullname" asp-for="FullName">
                         <span class="focus-input100"></span>

@@ -33,6 +33,9 @@ namespace MyWebiste.Security
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, account.Username));
             claims.Add(new Claim("FullName", account.FullName));
+            claims.Add(new Claim("Photo", account.Photo?? "default-profile-picture.png"));
+
+
             account.RoleAccounts.ToList().ForEach(ra =>
             {
                 claims.Add(new Claim(ClaimTypes.Role, ra.Role.Name));

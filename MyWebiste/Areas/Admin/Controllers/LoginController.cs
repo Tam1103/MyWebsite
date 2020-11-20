@@ -1,5 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyWebiste.Models;
 using MyWebiste.Security;
@@ -12,11 +16,13 @@ namespace MyWebiste.Areas.Admin.Controllers
     {
         private readonly DatabaseContext db;
         private readonly SecurityManager securityManager;
-
-        public LoginController(DatabaseContext _db)
+        private IHostingEnvironment ihostingEnvironment;
+        public LoginController(DatabaseContext _db, IHostingEnvironment _ihostingEnvironment)
         {
             db = _db;
             securityManager = new SecurityManager();
+            ihostingEnvironment = _ihostingEnvironment;
+
         }
         [Route("")]
         [Route("index")]
@@ -77,7 +83,7 @@ namespace MyWebiste.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("register")]
-        public IActionResult Regester(Account account)
+        public IActionResult Regester(Account account, IFormFile photo)
         {
             var eaccount = db.Accounts.All(a => a.Email != account.Email && a.Username != account.Username);
             if (!eaccount)
@@ -87,6 +93,13 @@ namespace MyWebiste.Areas.Admin.Controllers
             }
             account.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
             account.Status = true;
+            
+            var fileName = DateTime.Now.ToString("MMddyyyyhhmmss") + photo.FileName;
+            var path = Path.Combine(this.ihostingEnvironment.WebRootPath, "account", fileName);
+            var stream = new FileStream(path, FileMode.Create);
+            photo.CopyToAsync(stream);
+            account.Photo = fileName;
+
             db.Accounts.Add(account);
             db.SaveChanges();
 
@@ -146,7 +159,7 @@ namespace MyWebiste.Areas.Admin.Controllers
             }
         }
 
-         [HttpGet]
+        [HttpGet]
         [Route("profile")]
         public IActionResult Profile()
         {
@@ -158,12 +171,21 @@ namespace MyWebiste.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("profile")]
-        public IActionResult Profile(Account account)
+        public IActionResult Profile(Account account, IFormFile photo)
         {
             var currentAccount = db.Accounts.SingleOrDefault(a => a.Id.Equals(account.Id));
             if (!string.IsNullOrEmpty(account.Password))
             {
                 currentAccount.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
+            }
+
+            if (photo != null && !string.IsNullOrEmpty(photo.FileName))
+            {
+                var fileName = DateTime.Now.ToString("MMddyyyyhhmmss") + photo.FileName;
+                var path = Path.Combine(this.ihostingEnvironment.WebRootPath, "account", fileName);
+                var stream = new FileStream(path, FileMode.Create);
+                photo.CopyToAsync(stream);
+                currentAccount.Photo = fileName;
             }
             currentAccount.Username = account.Username;
             currentAccount.Email = account.Email;
