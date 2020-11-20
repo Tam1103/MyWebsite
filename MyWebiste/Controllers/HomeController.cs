@@ -1,21 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
+using MyWebiste.Models;
+using System.Linq;
 
 namespace MyWebiste.Controllers
 {
+    [Route("home")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DatabaseContext _context;
+        public HomeController(DatabaseContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
+        [Route("")]
+        [Route("index")]
+        [Route("~/")]
         public IActionResult Index()
+        {
+            var product = _context.Products.OrderByDescending(p => p.Id).Where(p => p.Status).Take(4).ToList();
+            return View("Index", product);
+        }
+
+        [Route("error")]
+        public IActionResult Error()
         {
             return View();
         }
+
     }
 }
