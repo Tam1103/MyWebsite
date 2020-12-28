@@ -80,7 +80,6 @@ namespace MyWebiste.Areas.Admin.Controllers
             {
                 ParentId = id
             };
-
             return View("AddSubcategory", categories);
         }
 

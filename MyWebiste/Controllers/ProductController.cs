@@ -44,7 +44,6 @@ namespace MyWebiste.Controllers
             ViewBag.featuredPhoto = product.Photos.Where(p => p.Status && p.Featured).ToList();
             var category = db.Categories.Find(product.CategoryId);
             ViewBag.nameCategory = category.Name;
-
             ViewBag.releatedProducts = db.Products.Where(p => p.CategoryId == product.CategoryId && p.Id != product.Id && p.Status).ToList();
            
             return View("Details", product);

@@ -21,12 +21,10 @@ namespace MyWebiste.Security
             await httpcontext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
         }
 
-
         public async void SignOut(HttpContext htttpContext)
         {
             await htttpContext.SignOutAsync();
         }
-
 
         private IEnumerable<Claim> GetUserClaims(Account account)
         {
@@ -34,7 +32,6 @@ namespace MyWebiste.Security
             claims.Add(new Claim(ClaimTypes.Name, account.Username));
             claims.Add(new Claim("FullName", account.FullName));
             claims.Add(new Claim("Photo", account.Photo?? "default-profile-picture.png"));
-
 
             account.RoleAccounts.ToList().ForEach(ra =>
             {
