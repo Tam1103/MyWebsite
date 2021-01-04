@@ -1,3 +1,3 @@
 # Build Website
 # Technology 
-# ASP.NET CORE 5.0
+# Asp.net core 5.0 and SQL Server Management Studio
