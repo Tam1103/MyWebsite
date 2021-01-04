@@ -1,3 +1,3 @@
-# Build LapTop Website
-# Technology
-Asp.net core 5.0
+# Build Website
+# Technology 
+# ASP.NET CORE 5.0
