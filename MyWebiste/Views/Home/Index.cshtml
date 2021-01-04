@@ -1,8 +1,69 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<MyWebiste.Models.Product>
+@{
+    ViewData["Title"] = "Index";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .grid_1_of_4 img{
+        height: 230px;
+    }
+</style>
+<div class="content">
+    <div class="content_top">
+        <div class="heading">
+            <h3>Products</h3>
+        </div>
+        <div class="see">
+            <p><a href="#">See all Products</a></p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="section group">
+        @foreach (var product in Model)
+        {
+            var photo = product.Photos.LastOrDefault(p => p.Status);
+            @if (photo != null)
+            {
+                <div class="grid_1_of_4 images_1_of_4">
+                    <a asp-controller="product" asp-action="details" asp-route-id="@product.Id"><img src="~/products/@photo.Name" alt="" /></a>
+                    <h2>@product.Name</h2>
+                    <div class="price-details">
+                        <div class="price-number">
+                            <p><span class="rupees">@String.Format("{0:#,###}", product.Price)<span class="input-group-addon">$</span></span></p>
+                        </div>
+                        <div class="add-cart">
+                            <h4><a href="preview.html">Add to Cart</a></h4>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div class="content_bottom">
+        <div class="heading">
+            <h3>Feature Products</h3>
+        </div>
+        <div class="see">
+            <p><a href="#">See all Products</a></p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="section group">
+        @foreach (var photo in ViewBag.featureProduct)
+        {
+            <div class="grid_1_of_4 images_1_of_4">
+                    <a asp-controller="product" asp-action="details" asp-route-id="@photo.Product.Id"><img src="~/products/@photo.Name" alt="@photo.Name" /></a>
+                    <h2>@photo.Product.Name</h2>
+                    <div class="price-details">
+                        <div class="price-number">
+                            <p><span class="rupees">@String.Format("{0:#,###}", photo.Product.Price)<span class="input-group-addon">$</span></span></p>
+                        </div>
+                        <div class="add-cart">
+                            <h4><a href="preview.html">Add to Cart</a></h4>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+        }
+    </div>
 </div>
