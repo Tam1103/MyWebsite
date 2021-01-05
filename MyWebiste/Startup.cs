@@ -66,7 +66,8 @@ namespace MyWebiste
 
             app.Run(async context =>
             {
-                await context.Response.WriteAsync("not found 4 0 4");
+                //await context.Response.WriteAsync("not found 4 0 4");
+                context.Response.Redirect("/home/error");
             });
         }
     }
