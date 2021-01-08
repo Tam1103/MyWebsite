@@ -15,7 +15,7 @@
 - After migrate database successful
 - Choose profile to run or press F5
 ## Admin template: https://startbootstrap.com/templates/sb-admin/
-## Portal template: https://w3layouts.com/template/home-shoppe-online-shopping-cart-mobile-website-template/
+## Public template: https://w3layouts.com/template/home-shoppe-online-shopping-cart-mobile-website-template/
 
 ## References
 - https://medium.com/swlh/step-by-step-tutorial-to-build-multi-cultural-asp-net-core-web-app-3fac9a960c43
